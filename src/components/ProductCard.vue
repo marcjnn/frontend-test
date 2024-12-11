@@ -1,28 +1,44 @@
 <template>
-  <div class="product-item">
-    <span class="icono favorite"></span>
+  <!-- Ajusto la semantica de html -->
+  <article class="product-item">
+    <!--
+    Tenemos varios problemas por aquí
+    - el icono no es clickable, por lo que no se emite el evento 'product-favorite-clicked'
+    - para respetar el html semántico usaré button en lugar de span
+    - es necesario añadir la clase 'selected' cuándo el producto tiene la marca de favorito
+    - cambio palabra 'icono' por 'icon' para seguir la nomenclatura en ingles, cómo en todo el proyecto
+    -->
+    <button
+      type="button"
+      class="btn-favorite"
+      @click="onFavoriteClicked"
+      aria-label="Add to favorites"
+    >
+      <span
+        class="icon favorite"
+        :class="{ selected: product.favorite }"
+      ></span>
+    </button>
     <img :src="product.image" :alt="product.title" class="product-image" />
     <h3 class="product-title">{{ product.title }}</h3>
     <p class="product-description">{{ product.description }}</p>
-    <p><strong>Price:</strong> ${{ product.price }}</p>
-  </div>
+    <p><span class="price-text">Price:</span> ${{ product.price }}</p>
+  </article>
 </template>
 
 <script>
+import { productFavoriteClickedEventName } from '@/helpers/constants';
 export default {
   name: 'ProductCard',
   props: ['product'],
-  data () {
-    return {
-
-    }
-  },
+  /* Elimino el campo 'data' ya que estaba vacío */
   methods: {
-    onFavoriteClicked () {
-      this.$emit('productFavoriteClicked', this.product.id)
-    }
-  }
-}
+    onFavoriteClicked() {
+      /* Uso la variable para el nombre del evento emitido para que se emita correctamente */
+      this.$emit(productFavoriteClickedEventName, this.product.id);
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -32,6 +48,7 @@ export default {
   padding: 15px;
   border-radius: 5px;
   text-align: center;
+  --btn-size: 30px;
 }
 
 .product-image {
@@ -59,18 +76,29 @@ export default {
   line-height: 1.8em;
 }
 
-.favorite {
-  position: absolute;
-  right: 20px;
-  width: 30px;
-  height: 30px;
+.price-text {
+  font-weight: 700;
 }
 
-span.icono.favorite.selected::before {
+/* Al usar el button alrededor del icono es necesario ajustar los estilos */
+.btn-favorite {
+  position: absolute;
+  top: 20px;
+  right: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--btn-size);
+  height: var(--btn-size);
+  border: none;
+  background-color: transparent;
+}
+
+span.icon.favorite.selected::before {
   background-image: url("../assets/favorite-filled-red.svg");
 }
 
-span.icono.favorite::before {
+span.icon.favorite::before {
   background-image: url("../assets/favorite-filled-muted.svg");
 }
 
@@ -78,19 +106,11 @@ span.icono.favorite::before {
   filter: drop-shadow(3px 5px 2px rgb(0 0 0 / 0.4));
 }
 
-.favorite-icon {
-  background-image: url('../assets/favorite-filled-muted.svg');
-}
+/* Elimino selectores de clase .favorite-icon ya que no se usa en ningún sitio */
 
-.favorite-icon.selected {
-  background-image: url('../assets/favorite-filled-red.svg');
-}
+/* Elimino el display del span.icon, al estar dentro del contenedor flex ya no es necesario */
 
-span.icono {
-  display: inline-block;
-}
-
-span.icono::before {
+span.icon::before {
   content: "";
   width: 2.4rem;
   height: 2.4rem;

@@ -140,7 +140,7 @@ export default {
       ]);
       if (!passwordHasLetters) {
         this.errors.push(
-          'Password must contain at least one letter in lowercase and one number'
+          'Password must contain at least one letter in and one number'
         );
       }
 

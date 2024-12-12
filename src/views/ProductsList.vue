@@ -105,7 +105,7 @@ export default {
   list-style-type: none;
 }
 
-@media (min-width: 992px) {
+@media (min-width: 768px) {
   .products {
     grid-template-columns: repeat(2, 1fr);
   }

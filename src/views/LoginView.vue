@@ -60,6 +60,7 @@ import { tokenStorageName } from '@/helpers/constants';
 import { validateInputField } from '@/helpers/validator';
 import { login } from '@/services/user';
 export default {
+  /* Me he permitido cambiar el nombre del componente a uno que consiste de 2 palabras, siendo una de las prácticas de creación de los componentes */
   name: 'LoginView',
   data() {
     return {

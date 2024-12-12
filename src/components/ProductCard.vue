@@ -30,7 +30,12 @@
 import { productFavoriteClickedEventName } from '@/helpers/constants';
 export default {
   name: 'ProductCard',
-  props: ['product'],
+  props: {
+    product: {
+      type: Object,
+      required: true
+    },
+  },
   /* Elimino el campo 'data' ya que estaba vacío */
   methods: {
     onFavoriteClicked() {
